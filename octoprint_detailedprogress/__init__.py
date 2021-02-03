@@ -131,8 +131,8 @@ class DetailedProgress(octoprint.plugin.EventHandlerPlugin,
 				currentData["progress"]["printTime"])
 			currentData["progress"]["printTimeLeftString"] = self._get_time_from_seconds(
 				currentData["progress"]["printTimeLeft"])
-			currentData["progress"]["ETA"] = ("Tomorrow " if time.localtime(time.time() +
-				currentData["progress"]["printTimeLeft"]) > datetime.datetime.combine(
+			currentData["progress"]["ETA"] = ("Tomorrow " if datetime.datetime.fromtimestamp(
+				time.time() + currentData["progress"]["printTimeLeft"]) > datetime.datetime.combine(
 				datetime.datetime.today(), datetime.time(0, 0, 0)) + datetime.timedelta(
 				hours=24) else "") + time.strftime(self._eta_strftime, time.localtime(
 				time.time() + currentData["progress"]["printTimeLeft"]))
