@@ -130,7 +130,10 @@ class DetailedProgress(octoprint.plugin.EventHandlerPlugin,
 				currentData["progress"]["printTime"])
 			currentData["progress"]["printTimeLeftString"] = self._get_time_from_seconds(
 				currentData["progress"]["printTimeLeft"])
-			currentData["progress"]["ETA"] = time.strftime(self._eta_strftime, time.localtime(
+			currentData["progress"]["ETA"] = ("Tomorrow " if time.localtime(time.time() +
+				currentData["progress"]["printTimeLeft"]) > datetime.datetime.combine(
+				datetime.datetime.today(), datetime.time(0, 0, 0)) + datetime.timedelta(
+				hours=24) else "") + time.strftime(self._eta_strftime, time.localtime(
 				time.time() + currentData["progress"]["printTimeLeft"]))
 			currentData["progress"]["layerProgress"] = self._layerIs
 			currentData["progress"]["heightProgress"] = self._heightIs
@@ -194,7 +197,7 @@ class DetailedProgress(octoprint.plugin.EventHandlerPlugin,
 	def get_settings_defaults(self):
 		return dict(
 			time_to_change="10",
-			eta_strftime="%-m/%d %-I.%M%p",
+			eta_strftime="%-I:%M%p",
 			etl_format="{hours:02d}h{minutes:02d}m{seconds:02d}s",
 			print_done_message="Print Done",
 			use_M73=True,
